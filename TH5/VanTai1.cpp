@@ -1,49 +1,55 @@
 #include<iostream>
-#include<vector>
 using namespace std;
 
-void quickSort(vector<float> &x, int left, int right){
-	if(left>=right)	return;
-	int i = left, j = right;
-	float pivot = x[(left + right) / 2];
-	while(i<=j){
-		while(x[i] > pivot)	i++;
-		while(x[j] < pivot)	j--;
-		if(i<=j){
-			swap(x[i], x[j]);
+//void sort()
+
+
+bool A1(float t[], int n, float m, float x[], int &z) {
+	int i = 0;
+	z = 0;
+	while (m > 0 && i < n) {
+		if (m >= t[i]) {
+			x[z] = t[i];
+			m = m - t[i];
 			i++;
-			j--;
+			z++;
+		}
+		else
+		{
+			break;
 		}
 	}
-	quickSort(x, left, j);
-	quickSort(x, i, right);
-}
-
-int A4(vector<float> weights, int n, int d){
-	vector<int> x;
-	int i = 0;
-	while(i < n && d >0){
-		d = d - weights[i];
-		i++;
+	for (int j = n - 1; j >= i; j--) {
+		if (m <= t[j]) {
+			x[z] = t[j];
+			m = m - t[j];
+			z++;
+			break;
+		}
 	}
-	if( d > 0)	return -1;
-	else return i;
+	if (m > 0)	return false;
+	return true;
 }
 
-int main(){
+void print_arr(float x[], int z) {
+	cout << "Danh sach xe lan luot la: ";
+	for (int i = 0; i < z; i++) {
+		cout << x[i] <<" ";
+	}
+	cout << endl;
+}
+
+int main() {
+	float m = 70;
 	int n = 6;
-	vector<float> weights= {4, 5, 10, 5.5, 7, 9};
-	float d = 20;
-	
-	quickSort(weights, 0, n-1);
-	
-	cout<<endl;
-	int ans = A4(weights, n, d);
-	cout<<"so xe toi thieu la "<< ans<<endl;
-	cout<<"Tai trong cua cac xe duoc su dung: ";
-	for(int i =0; i<ans; i++){
-		cout<<weights[i]<<", ";
+	float t[] = { 10, 9, 7, 5.5, 5, 4 };
+	float x[6] = { 0 };
+	int z = 0;
+	bool a = A1(t, n, m, x, z);
+	if (a) {
+		cout << "So xe tai la: " << z << endl;
+		print_arr(x, z);
 	}
-	
+	else cout << "Khong the cho het trong 1 luot" << endl;
 	return 0;
 }
