@@ -1,58 +1,56 @@
-#include <iostream>
-#include<vector>
+#include<iostream>
 using namespace std;
 
-void quick_sort(vector<int> &x, int left, int right){
-	if(left>= right)	return;
-	int i =left, j = right;
-	int pivot = x[ (left + right) / 2];
-	while(i<=j){
-		while(x[i] > pivot)	i++;
-		while(x[j] < pivot)	j--;
-		if(i<=j){
+void qsort(int x[], int left, int right) {
+	if (left >= right)	return;
+	int i = left, j = right;
+	int pivot = x[(left + right) / 2];
+	while (i <= j) {
+		while (x[i] > pivot)	i--;
+		while (x[j] < pivot)	j--;
+		if (i <= j) {
 			swap(x[i], x[j]);
 			i++;
 			j--;
-		}	
+		}
 	}
-	quick_sort(x, left, j);
-	quick_sort(x, i, right);
+	qsort(x, left, j);
+	qsort(x, i, right);
 }
 
-int coin_changing(vector<int> coin_arr, int n_coin, int money, vector<int>& S){
+
+int A1(int x[], int n, int m, int s[]) {
 	int i = 0;
 	int ans = 0;
-	while(money >0 && i< n_coin){
-		S[i] = money / coin_arr[i];
-		ans += S[i];
-		money = money % coin_arr[i];
+	while (m > 0 && i < n) {
+		s[i] = m / x[i];
+		ans += s[i];
+		m = m % x[i];
 		i++;
 	}
-	if(money > 0)	return -1;
-	else return ans;
+	if (m > 0)	return -1;
+	return ans;
 }
 
-void printCoin(vector<int> x, vector<int> y, int n) {
-    for (int i = 0; i < n; i++) {
-        if (x[i] != 0)
-            cout << "Can " << x[i] << " dong xu co menh gia la " << y[i] << endl;
-    }
-    cout << endl;
-}
-
-int main(){
-	int n = 6;
-	vector<int> coin_arr = {2, 5, 10, 20 , 50, 100};
-	vector<int> S(n, 0);
-	int m = 448;
-	
-	quick_sort(coin_arr, 0, n-1);
-	
-	int ans = coin_changing(coin_arr, n, m, S);
-	if(ans != -1){
-		cout<<"Can toi thieu: "<<ans<<endl;
-		printCoin(S, coin_arr, n);
+void print_arr(int s[],int x[], int n) {
+	for (int i = 0; i < n; i++) {
+		if (s[i] != 0) {
+			cout << s[i] << " dong xu tri gia " << x[i] << endl;
+		}
 	}
-	else	cout<<"Khong tim duoc"<<endl;
-	return 0;
+	cout << endl;
+}
+
+int main() {
+	int n = 3;
+	int x[] = { 3, 7, 10 };
+	int m = 12;
+	int s[3] = { 0 };
+	qsort(x, 0, n - 1);
+	int ans = A1(x, n, m, s);
+	if (ans != -1) {
+		cout << "can toi thieu " << ans << " dong xu" << endl;
+		print_arr(s, x, n);
+	}
+	else cout << "Khong tim duoc dap an" << endl;
 }
