@@ -1,80 +1,67 @@
 #include <iostream>
-#include <string>
-
-#define MAX 6
-
+#include <vector>
 using namespace std;
 
-struct HOCSINH {
-    string ten;
-    string tenDem;
-    int namSinh;
-    string diaChi;
+struct HS {
+	string ten;
+	string hoDem;
+	int namSing;
+	string diaChi;
 };
 
-HOCSINH b[100];
-
-void mergeSort(HOCSINH hs[], int l, int r) {
-    if (r > l) {
-        int m = (l + r) / 2;
-        mergeSort(hs, l, m);
-        mergeSort(hs, m + 1, r);
-        for (int i = m; i >= l; i--)
-            b[i] = hs[i];
-        for (int j = m + 1; j <= r; j++)
-            b[m + r + 1 - j] = hs[j];
-        int i = l, j = r;
-        for (int k = l; k <= r; k++) {
-            if (b[i].ten < b[j].ten) {
-                hs[k] = b[i];
-                i++;
-            }
-            else {
-                hs[k] = b[j];
-                j--;
-            }
-        }
-    }
+void sort_HS(vector<HS>& d, int left, int right) {
+	if (left >= right)	return;
+	int i = left, j = right;
+	string pivot = d[(i + j) / 2].ten;
+	while (i <= j) {
+		while (d[i].ten < pivot)	i++;
+		while (d[j].ten > pivot)	j--;
+		if (i <= j) {
+			swap(d[i], d[j]);
+			i++;
+			j--;
+		}
+	}
+	sort_HS(d, left, j);
+	sort_HS(d, i, right);
 }
 
-void hienThi(HOCSINH hs[], int n) {
-    for (int i = 0; i < n; i++)
-        cout << hs[i].tenDem << " " << hs[i].ten << " " << hs[i].namSinh << " " << hs[i].diaChi << " \n";
+int search(vector<HS>d, string P, int left, int right) {
+	if (left > right) return -1;
+	int m = (left + right) / 2;
+	if (d[m].ten == P) return m;
+	else if (d[m].ten < P) return search(d, P, m + 1, right);
+	else return search(d, P, left, m - 1);
 }
 
-int timKiem(HOCSINH hs[], int l, int r , string& ten) {
-    if (l > r) return -1;
-    int m = (l + r) / 2;
-    if (hs[m].ten == ten) {
-        return m;
-    }
-    if (hs[m].ten < ten)    return timKiem(hs, m + 1, r, ten);
-    if (hs[m].ten > ten)    return timKiem(hs, l, m -1, ten);
-    return -1;
+
+void print_arr(vector<HS> d) {
+	for (int i = 0; i < d.size(); i++) {
+		cout << d[i].ten << "\t" << d[i].hoDem << "\t" << d[i].namSing << "\t" << d[i].diaChi << endl;
+	}
+	cout << endl;
 }
 
 int main() {
-    HOCSINH hs[MAX] = {
-        {"anh", "nguyen van", 2000, "c"},
-        {"bang", "nguyen dinh", 2000, "c"},
-        {"hieu", "le trung", 2000, "c"},
-        {"binh", "tran nguyen", 2000, "c"},
-        {"an", "le phuong", 2000, "c"},
-        {"tam", "nguyen thi", 2000, "c"}
-    };
-    cout << "Danh sach khoi tao: \n";
-    hienThi(hs, MAX);
-    mergeSort(hs, 0, MAX - 1);
-    cout << "Danh sach sau khi duoc sap xep: \n";
-    hienThi(hs, MAX);
-    string ten = "an";
-    int viTri = timKiem(hs, 0, MAX - 1, ten);
-    if (viTri != -1) {
-        cout << "vi tri: " << viTri << endl;
-        cout << hs[viTri].tenDem << " " << hs[viTri].ten << " " << hs[viTri].namSinh << " " << hs[viTri].diaChi << " \n";
-    }
-    else {
-        cout << "Khong tim thay ten can tim" << endl;
-    }
-    return 0;
+	int n = 6;
+	vector<HS> d;
+	d.push_back({ "Dat", "Nguyen", 2004, "HaNoi" });
+	d.push_back({ "Oliver", "RoBen", 2000, "HCM" });
+	d.push_back({ "Joseph", "Jostar", 1999, "HaNoi" });
+	d.push_back({ "Dio", "Brando", 1998, "HCM" });
+	d.push_back({ "David", "Beckham", 1997, "HaNoi" });
+	d.push_back({ "Cris", "Ronaldo", 1996, "HCM" });
+
+	sort_HS(d, 0, 5);
+	print_arr(d);
+
+	string P = "Dataa";
+	int ans = search(d, P, 0, 5);
+	if (ans != -1) {
+		cout << "Vi tri cua hoc sinh trong danh sach la: " << ans << endl;
+		cout << "Thong tin:" << endl;
+		cout << d[ans].ten << "\t" << d[ans].hoDem << "\t" << d[ans].namSing << "\t" << d[ans].diaChi << endl;
+	}
+	else cout << "Khong tim thay" << endl;
+	return 0;
 }
