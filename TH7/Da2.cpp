@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-string s ="child have 3 age bigger than child have 1 age";
+string s ="child 3 years old bigger than child 1 year old";
 string word = "child";
 string add ="ren";
 
@@ -29,7 +29,11 @@ string A4(string s, string word, string& news) {
             j++;
         }
         if (j == n) {
-            news += "ren";
+            news += "children";
+            i+=4;
+        }
+        else{
+            news += s[i];
         }
     }
     return news;
@@ -39,8 +43,8 @@ string A4(string s, string word, string& news) {
 
 
 int main(){
-	cout<<A3(s, word);
-	string news = s;
+	cout<<A3(s, word)<<endl;
+	string news = "";
 	cout<<A4(s, word, news);
 	return 0;
 }
