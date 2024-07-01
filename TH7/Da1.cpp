@@ -13,25 +13,16 @@ bool A1(string s){
 	return true;
 }
 
-int A2(string s, int k){
-	int left, right;
-    int maxLength = 1; // Độ dài xâu con đối xứng dài nhất ban đầu là 1
-    int start = k; // Vị trí bắt đầu của xâu con đối xứng dài nhất
+int A2(string s, int k) {
+    int maxLength = 1;
+    int left = k, right = k;
 
-    // Xâu có độ dài lẻ
-    left = k;
-    right = k;
-    while (left >= 0 && right < s.length() && s[left] == s[right])
-    {
-        if (right - left + 1 > maxLength)
-        {
-            maxLength = right - left + 1;
-            start = left;
-        }
+    while (left >= 0 && right < s.length() && s[left] == s[right]) {
+        maxLength = max(maxLength, right - left + 1);
         left--;
         right++;
     }
-    return maxLength;
+return maxLength;
 }
 
 int main(){
